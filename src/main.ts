@@ -1,3 +1,7 @@
+/*
+Introduction to using Signals in Angular 16
+Follow us: https://github.com/Impesud
+*/
 import 'zone.js/dist/zone';
 import {
   Component,
@@ -23,7 +27,7 @@ import { FormsModule } from '@angular/forms';
       </select>
       <div>Ship: {{ selectedShip().name}}</div>
       <div>Price: {{ selectedShip().price | number: '1.2-2'}}</div>
-      <div style="font-weight: bold" [style.color]="color()">Total: {{ exPrice()  | number: '1.2-2' }}</div>
+      <div style="font-weight: bold" [style.color]="color()">Total: {{ totalPrice()  | number: '1.2-2' }}</div>
       <div *ngFor="let v of ships()">List of ships: {{ v.name }}</div>`
   ,
 })
@@ -37,8 +41,8 @@ export class App {
 
   ships = signal<Ship[]>([]);
 
-  exPrice = computed(() => this.selectedShip().price * this.quantity());
-  color = computed(() => this.exPrice() > 50000 ? 'red' : 'blue');
+  totalPrice = computed(() => this.selectedShip().price * this.quantity());
+  color = computed(() => this.totalPrice() > 50000 ? 'red' : 'blue');
 
   constructor() {
     
@@ -51,7 +55,7 @@ export class App {
     // Interstellar price increase
     this.selectedShip.mutate((v) => v.price = v.price + (v.price * 0.2));
 
-    // Add selected vehicle to array
+    // Add selected ship to array
     this.ships.mutate(v => v.push(this.selectedShip()))
 
     // Example of an effect
